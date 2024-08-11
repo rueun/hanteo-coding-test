@@ -30,15 +30,18 @@ class CategoryManager {
         categoryMapById.put(categoryId, category);
         categoryMapByName.put(categoryName, category);
 
-        // 부모 카테고리가 존재하면 자식 카테고리 추가
+        // 부모 카테고리가 없으면 루트 카테고리로 추가
         if (parentCategoryId == null) {
             rootCategories.add(category);
         } else {
-            categoryMapById.computeIfPresent(parentCategoryId, (k, parentCategory) -> {
-                final Category updatedParentCategory = parentCategory.addSubcategory(category);
-                categoryMapById.put(parentCategoryId, updatedParentCategory);
-                return updatedParentCategory;
-            });
+            // 부모 카테고리에 자식 카테고리 추가
+            final Category parentCategory = categoryMapById.get(parentCategoryId);
+            if (parentCategory == null) {
+                throw new IllegalArgumentException(String.format("Parent category with ID %s does not exist.", parentCategoryId));
+            }
+            final Category updatedParentCategory = parentCategory.addSubcategory(category);
+            categoryMapById.put(parentCategoryId, updatedParentCategory);
+            categoryMapByName.put(parentCategory.categoryName(), updatedParentCategory);
         }
     }
 
