@@ -16,6 +16,16 @@ public class CoinCombinationCounter {
     }
 
     /**
+     * 동전들과 목표 합계를 초기화하는 함수
+     * @param coins 동전들의 배열
+     * @param targetSum 목표 합계
+     * @return 초기화된 새로운 CoinCombinationCounter 객체
+     */
+    public CoinCombinationCounter resetCoinsAndTargetSum(int[] coins, int targetSum) {
+        return new CoinCombinationCounter(coins, targetSum);
+    }
+
+    /**
      * 동전들로 입력된 합계를 만들 수 있는 방법의 수를 계산하는 함수
      * @return 목표 합계를 만들 수 있는 방법의 수
      */
