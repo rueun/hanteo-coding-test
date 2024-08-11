@@ -14,8 +14,8 @@ class CategoryTest {
     @DisplayName("하위 카테고리 추가 테스트")
     void testAddSubcategory() {
         // Given
-        Category root = new Category(1, "Parent", null);
-        Category child = new Category(2, "Child", null);
+        Category root = new Category(1, "Parent", null, null);
+        Category child = new Category(2, "Child", 1, null);
 
         // When
         Category updatedRoot = root.addSubcategory(child);
@@ -26,15 +26,16 @@ class CategoryTest {
         assertEquals(1, updatedRoot.subcategories().size());
         assertEquals(2, updatedRoot.subcategories().get(0).categoryId());
         assertEquals("Child", updatedRoot.subcategories().get(0).categoryName());
+        assertEquals(1, updatedRoot.subcategories().get(0).parentCategoryId());
     }
 
     @Test
     @DisplayName("모든 카테고리 변환 테스트")
     void testToMapAllCategories() {
         // Given
-        Category root = new Category(1, "Parent", null);
-        Category child1 = new Category(2, "Child1", null);
-        Category child2 = new Category(3, "Child2", null);
+        Category root = new Category(1, "Parent", null,null);
+        Category child1 = new Category(2, "Child1", 1, null);
+        Category child2 = new Category(3, "Child2", 1, null);
 
         root = root.addSubcategory(child1);
         root = root.addSubcategory(child2);

@@ -8,12 +8,13 @@ import java.util.Map;
 /**
  * 카테고리 정보를 저장하는 불변 객체
  */
-record Category(int categoryId, String categoryName, List<Category> subcategories) {
+record Category(int categoryId, String categoryName, Integer parentCategoryId, List<Category> subcategories) {
 
     /**
      * 새로운 카테고리를 생성한다.
      * @param categoryId 카테고리 식별자
      * @param categoryName 카테고리 이름
+     * @param parentCategoryId 부모 카테고리 식별자 (null 이면 루트 카테고리임)
      * @param subcategories 하위 카테고리 목록 (null 이면 빈 리스트로 초기화)
      */
     public Category {
@@ -30,7 +31,7 @@ record Category(int categoryId, String categoryName, List<Category> subcategorie
     public Category addSubcategory(final Category subcategory) {
         final List<Category> updatedSubcategories = new ArrayList<>(subcategories);
         updatedSubcategories.add(subcategory);
-        return new Category(categoryId, categoryName, updatedSubcategories);
+        return new Category(categoryId, categoryName, parentCategoryId, updatedSubcategories);
     }
 
     /**
@@ -42,6 +43,7 @@ record Category(int categoryId, String categoryName, List<Category> subcategorie
         // 현재 카테고리 정보를 추가
         result.put("id", categoryId);
         result.put("name", categoryName);
+        result.put("parentId", parentCategoryId);
 
         // 하위 카테고리 목록을 변환
         final List<Map<String, Object>> subcategoriesMapList = new ArrayList<>();
