@@ -6,41 +6,40 @@ public class CoinCombinationCounter {
     private final int[] coins;
     // 목표 합계
     private final int targetSum;
-    // 목표 합계를 만들 수 있는 방법의 수를 저장하는 배열
-    private final int[] wayCounts;
+    // 동전 조합을 계산하는 전략
+    private final CoinCombinationStrategy strategy;
 
-    public CoinCombinationCounter(int[] coins, int targetSum) {
+    public CoinCombinationCounter(final CoinCombinationStrategy strategy, final int[] coins, final int targetSum) {
+        this.strategy = strategy;
         this.coins = coins;
         this.targetSum = targetSum;
-        this.wayCounts = new int[targetSum + 1];
     }
 
     /**
-     * 동전들과 목표 합계를 초기화하는 함수
+     * 동전 조합 계산 전략을 초기화
+     * @param strategy 새로운 동전 조합 계산 전략
+     * @return 초기화된 새로운 CoinCombinationCounter 객체
+     */
+    public CoinCombinationCounter resetStrategy(final CoinCombinationStrategy strategy) {
+        return new CoinCombinationCounter(strategy, coins, targetSum);
+    }
+
+    /**
+     * 동전들과 목표 합계를 초기화
      * @param coins 동전들의 배열
      * @param targetSum 목표 합계
      * @return 초기화된 새로운 CoinCombinationCounter 객체
      */
     public CoinCombinationCounter resetCoinsAndTargetSum(int[] coins, int targetSum) {
-        return new CoinCombinationCounter(coins, targetSum);
+        return new CoinCombinationCounter(strategy, coins, targetSum);
     }
 
     /**
-     * 동전들로 입력된 합계를 만들 수 있는 방법의 수를 계산하는 함수
+     * 전략을 사용하여 동전들로 목표 합계를 만들 수 있는 방법의 수 계산
      * @return 목표 합계를 만들 수 있는 방법의 수
      */
-
     public int countWays() {
-        // 목표 합계가 0인 경우는 아무 동전도 사용하지 않는 한 가지 방법 존재
-        wayCounts[0] = 1;
-
-        for (int coin : coins) {
-            for (int sum = coin; sum <= targetSum; sum++) {
-                // sum 금액을 만들 수 있는 방법의 수 = 기존 sum 금액을 만들 수 있는 방법의 수 + coin 금액을 뺀 금액을 만들 수 있는 방법의 수
-                wayCounts[sum] += wayCounts[sum - coin];
-            }
-        }
-        return wayCounts[targetSum];
+        return strategy.countWays(coins, targetSum);
     }
 }
 

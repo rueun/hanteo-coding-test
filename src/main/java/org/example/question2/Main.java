@@ -4,7 +4,10 @@ public class Main {
     public static void main(String[] args) {
         int[] coins = {1, 2, 3};
         int targetSum = 4;
-        CoinCombinationCounter coinCombinationCounter = new CoinCombinationCounter(coins, targetSum);
+
+        // 동적 프로그래밍 전략을 사용하여 동전 조합 계산
+        CoinCombinationStrategy dpStrategy = new DynamicProgrammingCoinCombinationStrategy();
+        CoinCombinationCounter coinCombinationCounter = new CoinCombinationCounter(dpStrategy, coins, targetSum);
         System.out.println(coinCombinationCounter.countWays());
 
         int[] coins2 = {2, 5, 3, 6};
