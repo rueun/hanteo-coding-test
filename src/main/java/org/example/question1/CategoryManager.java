@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 카테고리 트리를 관리하는 역할
- */
 class CategoryManager {
     private final Map<Integer, Category> categoryMapById;
     private final Map<String, List<Category>> categoryMapByName;
@@ -26,7 +23,7 @@ class CategoryManager {
      * @param parentCategoryId 부모 카테고리 식별자 (null 이면 루트 카테고리임)
      */
     public void addCategory(final int categoryId, final String categoryName, final Integer parentCategoryId) {
-        final Category category = new Category(categoryId, categoryName, parentCategoryId, new ArrayList<>());
+        final Category category = new Category(categoryId, categoryName, parentCategoryId);
         categoryMapById.put(categoryId, category);
         // 이름으로 리스트를 가져오거나 새 리스트를 생성
         categoryMapByName
@@ -52,12 +49,7 @@ class CategoryManager {
         if (parentCategory == null) {
             throw new IllegalArgumentException(String.format("Parent category with ID %s does not exist.", parentCategoryId));
         }
-        final Category updatedParentCategory = parentCategory.addSubcategory(subCategory);
-        // 부모 카테고리의 서브 카테고리 목록을 갱신
-        categoryMapById.put(parentCategoryId, updatedParentCategory);
-        List<Category> parentList = categoryMapByName.computeIfAbsent(parentCategory.categoryName(), k -> new ArrayList<>());
-        parentList.removeIf(c -> c.categoryId() == parentCategoryId);
-        parentList.add(updatedParentCategory);
+        parentCategory.addSubcategory(subCategory);
     }
 
     /**
@@ -83,6 +75,6 @@ class CategoryManager {
      * @return 해당 이름의 카테고리 목록
      */
     public List<Category> findCategoryByName(final String categoryName) {
-        return categoryMapByName.get(categoryName);
+        return categoryMapByName.getOrDefault(categoryName, List.of());
     }
 }

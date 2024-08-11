@@ -20,21 +20,19 @@ class CategoryManagerTest {
     @Test
     @DisplayName("루트 카테고리를 추가할 수 있다.")
     void testAddRootCategory() {
-
         // when
         categoryManager.addCategory(1, "루트 카테고리", null);
 
         // then
         final List<Category> rootCategories = categoryManager.getRootCategories();
         assertEquals(1, rootCategories.size());
-        assertEquals(1, rootCategories.get(0).categoryId());
-        assertEquals("루트 카테고리", rootCategories.get(0).categoryName());
+        assertEquals(1, rootCategories.get(0).getCategoryId());
+        assertEquals("루트 카테고리", rootCategories.get(0).getCategoryName());
     }
 
     @Test
     @DisplayName("서브 카테고리를 추가할 수 있다.")
     void testAddSubcategory() {
-
         // given
         categoryManager.addCategory(1, "루트 카테고리", null);
 
@@ -44,12 +42,12 @@ class CategoryManagerTest {
         // then
         Category rootCategory = categoryManager.findCategoryById(1);
         assertNotNull(rootCategory);
-        assertEquals(1, rootCategory.categoryId());
+        assertEquals(1, rootCategory.getCategoryId());
 
-        List<Category> subcategories = rootCategory.subcategories();
+        List<Category> subcategories = rootCategory.getSubcategories();
         assertEquals(1, subcategories.size());
-        assertEquals(2, subcategories.get(0).categoryId());
-        assertEquals("서브 카테고리", subcategories.get(0).categoryName());
+        assertEquals(2, subcategories.get(0).getCategoryId());
+        assertEquals("서브 카테고리", subcategories.get(0).getCategoryName());
     }
 
     @Test
@@ -78,10 +76,9 @@ class CategoryManagerTest {
 
         // then
         assertEquals(1, categories.size());
-        assertEquals(1, categories.get(0).categoryId());
-        assertEquals("루트 카테고리", categories.get(0).categoryName());
+        assertEquals(1, categories.get(0).getCategoryId());
+        assertEquals("루트 카테고리", categories.get(0).getCategoryName());
     }
-
 
     @Test
     @DisplayName("카테고리 ID로 카테고리를 찾을 수 있다.")
@@ -94,7 +91,7 @@ class CategoryManagerTest {
 
         // then
         assertNotNull(foundCategory);
-        assertEquals("루트 카테고리", foundCategory.categoryName());
+        assertEquals("루트 카테고리", foundCategory.getCategoryName());
     }
 
     @Test
@@ -109,9 +106,9 @@ class CategoryManagerTest {
 
         // then
         assertEquals(2, rootCategories.size());
-        assertTrue(rootCategories.stream().anyMatch(c -> c.categoryName().equals("루트 카테고리1")));
-        assertTrue(rootCategories.stream().anyMatch(c -> c.categoryName().equals("루트 카테고리2")));
-        assertEquals(1, rootCategories.get(0).categoryId());
-        assertEquals(2, rootCategories.get(1).categoryId());
+        assertTrue(rootCategories.stream().anyMatch(c -> c.getCategoryName().equals("루트 카테고리1")));
+        assertTrue(rootCategories.stream().anyMatch(c -> c.getCategoryName().equals("루트 카테고리2")));
+        assertEquals(1, rootCategories.get(0).getCategoryId());
+        assertEquals(2, rootCategories.get(1).getCategoryId());
     }
 }
