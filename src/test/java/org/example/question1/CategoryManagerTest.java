@@ -74,11 +74,12 @@ class CategoryManagerTest {
         categoryManager.addCategory(1, "루트 카테고리", null);
 
         // when
-        Category foundCategory = categoryManager.findCategoryByName("루트 카테고리");
+        final List<Category> categories = categoryManager.findCategoryByName("루트 카테고리");
 
         // then
-        assertNotNull(foundCategory);
-        assertEquals(1, foundCategory.categoryId());
+        assertEquals(1, categories.size());
+        assertEquals(1, categories.get(0).categoryId());
+        assertEquals("루트 카테고리", categories.get(0).categoryName());
     }
 
 
